@@ -39,7 +39,7 @@ export function upload(
             const leftChannelData = new Float32Array(upsampledAudioBuffer.getChannelData(0));
             const rightChannelData = new Float32Array(upsampledAudioBuffer.getChannelData(1));
 
-            const ampLimiter = Math.max(1, ...leftChannelData.map(Math.abs), ...rightChannelData(Math.abs));
+            const ampLimiter = Math.max(1, ...leftChannelData.map(Math.abs), ...rightChannelData.map(Math.abs));
 
             const interleavedData = new Int16Array(leftChannelData.length + rightChannelData.length);
             for (let i = 0, j = 0; i < leftChannelData.length; i++, j += 2) {
