@@ -39,10 +39,12 @@ export function upload(
             const leftChannelData = new Float32Array(upsampledAudioBuffer.getChannelData(0));
             const rightChannelData = new Float32Array(upsampledAudioBuffer.getChannelData(1));
 
+            const ampLimiter = Math.max(1, ...leftChannelData.map(Math.abs), ...rightChannelData(Math.abs));
+
             const interleavedData = new Int16Array(leftChannelData.length + rightChannelData.length);
             for (let i = 0, j = 0; i < leftChannelData.length; i++, j += 2) {
-                interleavedData[j] = Math.max(-32767, Math.min(32767, leftChannelData[i] * 32767));
-                interleavedData[j + 1] = Math.max(-32767, Math.min(32767, rightChannelData[i] * 32767));
+                interleavedData[j] = leftChannelData[i] * ampLimiter * 32767;
+                interleavedData[j + 1] = rightChannelData[i] * ampLimiter * 32767;
             }
 
             // Debug and save PCM data if needed
